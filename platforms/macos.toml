@@ -143,6 +143,11 @@ component = "gui-apps"
 label = "Inkscape"
 install = "brew install --cask inkscape"
 [[item]]
+id = "app:blender"
+component = "gui-apps"
+label = "Blender (3D; headless `blender` used by agentic-setup's blender-image-to-3d skill)"
+install = "brew install --cask blender"
+[[item]]
 id = "app:middleclick"
 component = "gui-apps"
 label = "MiddleClick"
