@@ -1,0 +1,172 @@
+# Windows (native) install map and OS-specific choices. Prose and prerequisites: windows.md.
+# IDs are winget package IDs written from memory: the agent MUST confirm each with `winget show --id <id> -e`.
+os = "windows"
+install_tmpl = "winget install --id {pkg} -e"
+
+[[item]]
+id = "git"
+builtin = true
+note = "Git for Windows is present because Claude Code requires it"
+[[item]]
+id = "gh"
+pkg = "GitHub.cli"
+[[item]]
+id = "jq"
+pkg = "jqlang.jq"
+[[item]]
+id = "ripgrep"
+pkg = "BurntSushi.ripgrep.MSVC"
+[[item]]
+id = "fd"
+pkg = "sharkdp.fd"
+[[item]]
+id = "fzf"
+pkg = "junegunn.fzf"
+[[item]]
+id = "curl"
+builtin = true
+note = "curl.exe; use it, not the PowerShell alias"
+[[item]]
+id = "gitleaks"
+pkg = "Gitleaks.Gitleaks"
+[[item]]
+id = "zoxide"
+pkg = "ajeetdsouza.zoxide"
+[[item]]
+id = "starship"
+pkg = "Starship.Starship"
+note = "needs a Nerd Font for icons"
+[[item]]
+id = "fastfetch"
+pkg = "Fastfetch-cli.Fastfetch"
+[[item]]
+id = "btop"
+install = "scoop install btop"
+[[item]]
+id = "uv"
+pkg = "astral-sh.uv"
+[[item]]
+id = "node"
+pkg = "OpenJS.NodeJS.LTS"
+note = "node-line=current: use OpenJS.NodeJS instead"
+[[item]]
+id = "bun"
+pkg = "Oven-sh.Bun"
+[[item]]
+id = "deno"
+pkg = "DenoLand.Deno"
+[[item]]
+id = "rustup"
+pkg = "Rustlang.Rustup"
+note = "MSVC toolchain; needs the C++ Build Tools (cc item)"
+[[item]]
+id = "cargo"
+with = "rustup"
+[[item]]
+id = "go"
+pkg = "GoLang.Go"
+[[item]]
+id = "java"
+pkg = "Microsoft.OpenJDK.21"
+[[item]]
+id = "ruby"
+pkg = "RubyInstallerTeam.RubyWithDevKit.3.4"
+note = "pick the current RubyInstaller version"
+[[item]]
+id = "kamal"
+install = "gem install kamal"
+note = "Kamal on native Windows is poor; WSL is better for deploys"
+[[item]]
+id = "docker"
+pkg = "Docker.DockerDesktop"
+elevation = true
+note = "needs WSL2 or Hyper-V and a reboot; alternative: Docker Engine inside WSL"
+[[item]]
+id = "cc"
+install = "winget install --id Microsoft.VisualStudio.2022.BuildTools -e --override \"--quiet --add Microsoft.VisualStudio.Workload.VCTools --includeRecommended\""
+elevation = true
+note = "check `cl` only works in a Developer PowerShell; verify with `where.exe link` or a trivial `cargo build`"
+[[item]]
+id = "cmake"
+pkg = "Kitware.CMake"
+[[item]]
+id = "make"
+na = "prefer cmake; `scoop install make` if a project needs it"
+[[item]]
+id = "lld"
+pkg = "LLVM.LLVM"
+note = "provides lld-link; the ld.lld check does not apply, use `lld-link --version`"
+[[item]]
+id = "typst"
+pkg = "Typst.Typst"
+[[item]]
+id = "d2"
+pkg = "Terrastruct.D2"
+[[item]]
+id = "tesseract"
+pkg = "UB-Mannheim.TesseractOCR"
+note = "not added to PATH by default: add it"
+[[item]]
+id = "radare2"
+install = "scoop install radare2"
+[[item]]
+id = "qemu"
+pkg = "SoftwareFreedomConservancy.QEMU"
+[[item]]
+id = "7zip"
+pkg = "7zip.7zip"
+note = "binary is 7z.exe; may need PATH"
+[[item]]
+id = "squashfs"
+na = "use WSL for squashfs extraction"
+[[item]]
+id = "actionlint"
+install = "scoop install actionlint"
+[[item]]
+id = "mise"
+pkg = "jdx.mise"
+note = "activate in $PROFILE.local.ps1"
+[[item]]
+id = "fnm"
+pkg = "Schniz.fnm"
+
+# ---------------------------------------------------------------- platform-only items
+[[item]]
+id = "scoop"
+component = "extras"
+label = "Scoop (CLI package manager; needed by btop, radare2, actionlint)"
+install = "irm get.scoop.sh | iex"
+ask = true
+[[item]]
+id = "pwsh"
+component = "shell"
+label = "PowerShell 7"
+pkg = "Microsoft.PowerShell"
+[[item]]
+id = "app:windows-terminal"
+component = "gui-apps"
+label = "Windows Terminal (built into Windows 11; install on 10)"
+pkg = "Microsoft.WindowsTerminal"
+
+# ---------------------------------------------------------------- OS settings
+[[choice]]
+id = "win-show-extensions"
+component = "os-defaults"
+label = "Explorer: show file extensions"
+type = "bool"
+default = false
+apply = "Set-ItemProperty HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced HideFileExt 0"
+[[choice]]
+id = "win-execution-policy"
+component = "os-defaults"
+label = "Set PowerShell execution policy to RemoteSigned (current user)"
+type = "bool"
+default = true
+apply = "Set-ExecutionPolicy -Scope CurrentUser RemoteSigned"
+[[choice]]
+id = "win-autocrlf"
+component = "dotfiles"
+label = "git core.autocrlf"
+type = "one"
+options = ["input", "true", "false", "keep"]
+default = "keep"

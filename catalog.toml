@@ -1,7 +1,9 @@
 # Tool catalog: WHAT should exist on a machine, never HOW to install it.
-# How = platforms/<os>.md. Verify = run `check` (works in sh, zsh, PowerShell and Git Bash).
+# How = platforms/<os>.toml (+ .md prose). Verify = run `check` (works in sh, zsh, PowerShell and Git Bash).
 # component = id used by the interview and ~/.config/dev-setup/selection.json.
 # min = optional minimum major version; pin = deliberate version policy (otherwise: best current).
+# os = optional list (macos, linux, windows); tool is only offered on those. Absent = all OSes.
+# Every tool is offered to the user individually in the interview (INSTRUCTIONS section 2); none is mandatory.
 
 [[tool]]
 id = "git"
@@ -214,3 +216,170 @@ id = "actionlint"
 component = "extras"
 check = "actionlint -version"
 why = "GitHub Actions linter"
+
+[[tool]]
+id = "mise"
+component = "version-managers"
+check = "mise --version"
+why = "per-project node/python/go/java/... versions via .mise.toml; replaces nvm/pyenv/asdf"
+
+[[tool]]
+id = "fnm"
+component = "version-managers"
+check = "fnm --version"
+why = "fast Node-only version manager; alternative to mise"
+
+[[tool]]
+id = "zsh"
+component = "shell-extras"
+os = ["macos", "linux"]
+check = "zsh --version"
+why = "the shell the unix dotfiles target (default on macOS)"
+
+[[tool]]
+id = "oh-my-zsh"
+component = "shell-extras"
+os = ["macos", "linux"]
+check = "test -d \"$HOME/.oh-my-zsh\""
+why = "zsh plugin framework; the zshrc uses it when present"
+
+[[tool]]
+id = "powerlevel10k"
+component = "shell-extras"
+os = ["macos", "linux"]
+check = "test -d \"$HOME/.oh-my-zsh/custom/themes/powerlevel10k\""
+why = "zsh theme; wins over starship in zsh when installed (needs oh-my-zsh and a Nerd Font)"
+
+[[tool]]
+id = "zsh-autosuggestions"
+component = "shell-extras"
+os = ["macos", "linux"]
+check = "test -r /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh || test -r /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh || test -r /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh || test -r /home/linuxbrew/.linuxbrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
+why = "fish-style history suggestions; the zshrc loads it from brew or system paths"
+
+[[tool]]
+id = "zsh-syntax-highlighting"
+component = "shell-extras"
+os = ["macos", "linux"]
+check = "test -r /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh || test -r /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh || test -r /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh || test -r /home/linuxbrew/.linuxbrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+why = "command highlighting while typing; the zshrc loads it from brew or system paths"
+
+# ---------------------------------------------------------------- components (menu groups)
+[component.core]
+title = "Core CLI"
+[component.shell]
+title = "Shell tools"
+[component.shell-extras]
+title = "Shell extras (zsh, oh-my-zsh, plugins)"
+[component.python]
+title = "Python (uv)"
+[component.node]
+title = "Node.js"
+[component.bun]
+title = "Bun"
+[component.deno]
+title = "Deno"
+[component.rust]
+title = "Rust"
+[component.go]
+title = "Go"
+[component.java]
+title = "Java"
+[component.ruby]
+title = "Ruby and Kamal"
+[component.containers]
+title = "Containers"
+[component.native-build]
+title = "Native build tools"
+[component.version-managers]
+title = "Version managers"
+[component.docs]
+title = "Docs and diagrams"
+[component.reverse-eng]
+title = "Reverse engineering"
+[component.extras]
+title = "Extras"
+[component.gui-apps]
+title = "GUI apps (platform file)"
+[component.os-defaults]
+title = "OS settings (platform file)"
+[component.dotfiles]
+title = "Dotfiles and git identity"
+
+# ---------------------------------------------------------------- presets: only pre-tick; the user can change everything
+[preset.full]
+components = ["*"]
+[preset.minimal]
+components = ["core", "shell", "dotfiles"]
+[preset.server]
+components = ["core", "shell", "python", "node", "rust", "bun", "containers", "native-build", "dotfiles"]
+[preset.custom]
+components = []
+
+# ---------------------------------------------------------------- choices shared by all OSes
+# type: one (options), many (options), bool, text. default_by_os overrides default.
+[[choice]]
+id = "node-line"
+component = "node"
+label = "Node.js line"
+type = "one"
+options = ["lts", "current"]
+default = "lts"
+
+[[choice]]
+id = "rust-targets"
+component = "rust"
+label = "Extra Rust cross-compile targets"
+type = "many"
+options = ["aarch64-apple-darwin", "x86_64-apple-darwin", "aarch64-pc-windows-msvc", "x86_64-pc-windows-msvc", "aarch64-unknown-linux-musl", "x86_64-unknown-linux-musl"]
+default = []
+
+[[choice]]
+id = "git-name"
+component = "dotfiles"
+label = "git user.name (empty = keep the existing value)"
+type = "text"
+default = ""
+
+[[choice]]
+id = "git-email"
+component = "dotfiles"
+label = "git user.email (empty = keep the existing value)"
+type = "text"
+default = ""
+
+[[choice]]
+id = "dotfile-gitconfig"
+component = "dotfiles"
+label = "dotfiles/common/gitconfig"
+type = "one"
+options = ["link", "copy", "skip"]
+default = "link"
+default_by_os = { windows = "copy" }
+
+[[choice]]
+id = "dotfile-zshenv"
+component = "dotfiles"
+os = ["macos", "linux"]
+label = "dotfiles/unix/zshenv"
+type = "one"
+options = ["link", "copy", "skip"]
+default = "link"
+
+[[choice]]
+id = "dotfile-zshrc"
+component = "dotfiles"
+os = ["macos", "linux"]
+label = "dotfiles/unix/zshrc"
+type = "one"
+options = ["link", "copy", "skip"]
+default = "link"
+
+[[choice]]
+id = "dotfile-profile"
+component = "dotfiles"
+os = ["windows"]
+label = "dotfiles/windows/profile.ps1 (dot-sourced from $PROFILE)"
+type = "one"
+options = ["link", "copy", "skip"]
+default = "copy"

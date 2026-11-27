@@ -1,0 +1,222 @@
+# macOS install map and OS-specific choices. Prose, prerequisites and caveats: macos.md.
+# item: id = catalog tool id, or a platform-only id ("app:<name>") with label + component + why.
+#   install  = command run by the agent (default: install_tmpl with pkg, pkg defaults to id)
+#   with     = installed together with another item; builtin = ships with the OS; na = not available (reason)
+#   ask      = remote installer or similar: confirm explicitly before running
+#   elevation= needs sudo/admin
+os = "macos"
+install_tmpl = "brew install {pkg}"
+
+[[item]]
+id = "git"
+[[item]]
+id = "gh"
+[[item]]
+id = "jq"
+[[item]]
+id = "ripgrep"
+[[item]]
+id = "fd"
+[[item]]
+id = "fzf"
+[[item]]
+id = "curl"
+[[item]]
+id = "gitleaks"
+[[item]]
+id = "zoxide"
+[[item]]
+id = "starship"
+[[item]]
+id = "fastfetch"
+[[item]]
+id = "btop"
+[[item]]
+id = "uv"
+[[item]]
+id = "node"
+note = "node-line=lts: brew install node@<lts-major> and brew link it; current: brew install node"
+[[item]]
+id = "bun"
+install = "brew install oven-sh/bun/bun"
+[[item]]
+id = "deno"
+[[item]]
+id = "rustup"
+install = "curl https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path"
+ask = true
+note = "official rustup, not brew rust; ~/.cargo/env is sourced by the zshenv"
+[[item]]
+id = "cargo"
+with = "rustup"
+[[item]]
+id = "go"
+[[item]]
+id = "java"
+pkg = "openjdk@21"
+note = "set JAVA_HOME=$(brew --prefix openjdk@21)/libexec/openjdk.jdk/Contents/Home in ~/.zshrc.local"
+[[item]]
+id = "ruby"
+note = "keg-only: put $(brew --prefix ruby)/bin first in PATH via ~/.zshrc.local"
+[[item]]
+id = "kamal"
+install = "gem install kamal"
+note = "needs ruby from brew first"
+[[item]]
+id = "docker"
+install = "brew install --cask orbstack"
+note = "OrbStack provides the docker CLI and engine; open the app once"
+[[item]]
+id = "cc"
+install = "xcode-select --install"
+note = "Command Line Tools; GUI prompt, the user must accept"
+[[item]]
+id = "cmake"
+[[item]]
+id = "make"
+with = "cc"
+[[item]]
+id = "lld"
+[[item]]
+id = "typst"
+[[item]]
+id = "d2"
+[[item]]
+id = "tesseract"
+[[item]]
+id = "radare2"
+[[item]]
+id = "qemu"
+[[item]]
+id = "7zip"
+pkg = "sevenzip"
+note = "binary is 7zz"
+[[item]]
+id = "squashfs"
+[[item]]
+id = "actionlint"
+[[item]]
+id = "mise"
+note = "shell activation line goes in ~/.zshrc.local"
+[[item]]
+id = "fnm"
+[[item]]
+id = "zsh"
+builtin = true
+[[item]]
+id = "oh-my-zsh"
+install = "RUNZSH=no KEEP_ZSHRC=yes sh -c \"$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)\""
+ask = true
+[[item]]
+id = "powerlevel10k"
+install = "git clone --depth=1 https://github.com/romkatv/powerlevel10k.git \"${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k\""
+note = "needs oh-my-zsh and a Nerd Font; `p10k configure` is interactive"
+[[item]]
+id = "zsh-autosuggestions"
+[[item]]
+id = "zsh-syntax-highlighting"
+
+# ---------------------------------------------------------------- GUI apps (each offered individually)
+[[item]]
+id = "app:ghostty"
+component = "gui-apps"
+label = "Ghostty (terminal)"
+install = "brew install --cask ghostty"
+[[item]]
+id = "app:rectangle"
+component = "gui-apps"
+label = "Rectangle (window manager)"
+install = "brew install --cask rectangle"
+[[item]]
+id = "app:betterdisplay"
+component = "gui-apps"
+label = "BetterDisplay"
+install = "brew install --cask betterdisplay"
+[[item]]
+id = "app:inkscape"
+component = "gui-apps"
+label = "Inkscape"
+install = "brew install --cask inkscape"
+[[item]]
+id = "app:middleclick"
+component = "gui-apps"
+label = "MiddleClick"
+install = "brew install --cask middleclick"
+[[item]]
+id = "app:motrix"
+component = "gui-apps"
+label = "Motrix (downloader)"
+install = "brew install --cask motrix"
+[[item]]
+id = "app:background-music"
+component = "gui-apps"
+label = "Background Music"
+install = "brew install --cask background-music"
+[[item]]
+id = "app:t3-code"
+component = "gui-apps"
+label = "T3 Code (nightly)"
+install = "brew install --cask t3-code@nightly"
+[[item]]
+id = "app:opencode"
+component = "gui-apps"
+label = "OpenCode desktop"
+install = "brew install --cask opencode-desktop"
+[[item]]
+id = "app:mactex"
+component = "gui-apps"
+label = "MacTeX (no GUI)"
+install = "brew install --cask mactex-no-gui"
+[[item]]
+id = "app:xquartz"
+component = "gui-apps"
+label = "XQuartz"
+install = "brew install --cask xquartz"
+[[item]]
+id = "app:mas"
+component = "gui-apps"
+label = "mas (Mac App Store CLI)"
+install = "brew install mas"
+[[item]]
+id = "app:cometdesk"
+component = "gui-apps"
+label = "CometDesk (tap: anisabdellatif/tap)"
+install = "brew install --cask anisabdellatif/tap/cometdesk"
+[[item]]
+id = "app:parabole"
+component = "gui-apps"
+label = "Parabole (tap: anisabdellatif/tap)"
+install = "brew install --cask anisabdellatif/tap/parabole"
+[[item]]
+id = "app:salatwidget"
+component = "gui-apps"
+label = "SalatWidget (tap: anisabdellatif/tap)"
+install = "brew install --cask anisabdellatif/tap/salatwidget"
+[[item]]
+id = "app:serein"
+component = "gui-apps"
+label = "Serein (tap: viceverse-cz/serein)"
+install = "brew install --cask viceverse-cz/serein/serein"
+
+# ---------------------------------------------------------------- OS settings (each a separate choice, default off)
+[[choice]]
+id = "macos-key-repeat"
+component = "os-defaults"
+label = "Fast key repeat"
+type = "bool"
+default = false
+apply = "defaults write -g KeyRepeat -int 2 && defaults write -g InitialKeyRepeat -int 15"
+[[choice]]
+id = "macos-finder-extensions"
+component = "os-defaults"
+label = "Finder: show all file extensions"
+type = "bool"
+default = false
+apply = "defaults write NSGlobalDomain AppleShowAllExtensions -bool true && killall Finder"
+[[choice]]
+id = "macos-dock-autohide"
+component = "os-defaults"
+label = "Dock: auto-hide"
+type = "bool"
+default = false
+apply = "defaults write com.apple.dock autohide -bool true && killall Dock"

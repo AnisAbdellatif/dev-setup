@@ -1,0 +1,149 @@
+# Linux install hints and OS-specific choices. The distro is the agent's call (see linux.md):
+# `hint` says where each tool is usually best from; `install` is a distro-independent official installer.
+# Same keys as macos.toml (ask, elevation, with, builtin, na). WSL counts as Linux.
+os = "linux"
+default_hint = "distro package if current enough, else the tool's official repo, installer or release binary"
+
+[[item]]
+id = "git"
+[[item]]
+id = "gh"
+hint = "official GitHub CLI apt/dnf repo (distro copy is usually old)"
+[[item]]
+id = "jq"
+[[item]]
+id = "ripgrep"
+[[item]]
+id = "fd"
+hint = "distro (`fd-find` on Debian; binary is `fdfind`, symlink it to `fd` in ~/.local/bin)"
+[[item]]
+id = "fzf"
+[[item]]
+id = "curl"
+[[item]]
+id = "gitleaks"
+hint = "GitHub release binary, or distro if current"
+[[item]]
+id = "zoxide"
+[[item]]
+id = "starship"
+[[item]]
+id = "fastfetch"
+[[item]]
+id = "btop"
+[[item]]
+id = "uv"
+install = "curl -LsSf https://astral.sh/uv/install.sh | sh"
+ask = true
+hint = "official installer; distro uv is usually stale"
+[[item]]
+id = "node"
+hint = "NodeSource or distro `nodejs` only if the chosen line is current, else the official binary tarball"
+[[item]]
+id = "bun"
+install = "curl -fsSL https://bun.sh/install | bash"
+ask = true
+[[item]]
+id = "deno"
+install = "curl -fsSL https://deno.land/install.sh | sh"
+ask = true
+[[item]]
+id = "rustup"
+install = "curl https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path"
+ask = true
+hint = "official rustup; never the distro rustc for the main toolchain"
+[[item]]
+id = "cargo"
+with = "rustup"
+[[item]]
+id = "go"
+hint = "official tarball from go.dev (distro Go is typically old) into /usr/local/go or ~/.local/go"
+[[item]]
+id = "java"
+hint = "distro openjdk-21; set JAVA_HOME in ~/.zshrc.local"
+[[item]]
+id = "ruby"
+[[item]]
+id = "kamal"
+install = "gem install kamal"
+hint = "`gem install --user-install kamal` if there is no root"
+[[item]]
+id = "docker"
+hint = "official Docker Engine repo for the distro (docs.docker.com/engine/install); see the docker-group choice"
+elevation = true
+[[item]]
+id = "cc"
+hint = "build-essential / @development-tools / base-devel (clang also fine)"
+elevation = true
+[[item]]
+id = "cmake"
+[[item]]
+id = "make"
+with = "cc"
+[[item]]
+id = "lld"
+hint = "distro (`lld`)"
+[[item]]
+id = "typst"
+hint = "official release binary; distro packages are rare or old"
+[[item]]
+id = "d2"
+hint = "official installer or release binary"
+[[item]]
+id = "tesseract"
+hint = "distro (`tesseract-ocr`)"
+[[item]]
+id = "radare2"
+[[item]]
+id = "qemu"
+hint = "distro (`qemu-system-x86` or equivalent)"
+[[item]]
+id = "7zip"
+hint = "distro (`7zip` or `p7zip-full`); binary may be 7z, 7zz or 7za"
+[[item]]
+id = "squashfs"
+hint = "distro (`squashfs-tools`)"
+[[item]]
+id = "actionlint"
+hint = "release binary"
+[[item]]
+id = "mise"
+hint = "official installer or release binary into ~/.local/bin; activation in ~/.zshrc.local"
+[[item]]
+id = "fnm"
+[[item]]
+id = "zsh"
+hint = "distro; changing the login shell is the change-shell choice"
+[[item]]
+id = "oh-my-zsh"
+install = "RUNZSH=no KEEP_ZSHRC=yes sh -c \"$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)\""
+ask = true
+[[item]]
+id = "powerlevel10k"
+install = "git clone --depth=1 https://github.com/romkatv/powerlevel10k.git \"${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k\""
+hint = "needs oh-my-zsh and a Nerd Font"
+[[item]]
+id = "zsh-autosuggestions"
+hint = "distro package; else clone into ~/.zsh/ and source it from ~/.zshrc.local"
+[[item]]
+id = "zsh-syntax-highlighting"
+hint = "distro package; else clone into ~/.zsh/ and source it from ~/.zshrc.local"
+
+[[choice]]
+id = "docker-group"
+component = "containers"
+label = "Add my user to the docker group (root-equivalent)"
+type = "bool"
+default = false
+[[choice]]
+id = "docker-rootless"
+component = "containers"
+label = "Set up rootless Docker instead"
+type = "bool"
+default = false
+[[choice]]
+id = "change-shell"
+component = "shell-extras"
+label = "Change the login shell to zsh (chsh)"
+type = "bool"
+default = false
