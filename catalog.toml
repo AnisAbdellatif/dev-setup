@@ -1,0 +1,216 @@
+# Tool catalog: WHAT should exist on a machine, never HOW to install it.
+# How = platforms/<os>.md. Verify = run `check` (works in sh, zsh, PowerShell and Git Bash).
+# component = id used by the interview and ~/.config/dev-setup/selection.json.
+# min = optional minimum major version; pin = deliberate version policy (otherwise: best current).
+
+[[tool]]
+id = "git"
+component = "core"
+check = "git --version"
+why = "VCS; defaultBranch=main is set in INSTRUCTIONS section 5"
+
+[[tool]]
+id = "gh"
+component = "core"
+check = "gh --version"
+why = "GitHub CLI; also the git credential helper"
+
+[[tool]]
+id = "jq"
+component = "core"
+check = "jq --version"
+why = "JSON processing; hooks and scripts rely on it"
+
+[[tool]]
+id = "ripgrep"
+component = "core"
+check = "rg --version"
+why = "fast grep; Claude Code uses it"
+
+[[tool]]
+id = "fd"
+component = "core"
+check = "fd --version"
+why = "fast find"
+
+[[tool]]
+id = "fzf"
+component = "core"
+check = "fzf --version"
+why = "fuzzy finder"
+
+[[tool]]
+id = "curl"
+component = "core"
+check = "curl --version"
+why = "HTTP; usually preinstalled, upgrade only if too old"
+
+[[tool]]
+id = "gitleaks"
+component = "core"
+check = "gitleaks version"
+why = "pre-commit secret scan used by every repo here"
+
+[[tool]]
+id = "zoxide"
+component = "shell"
+check = "zoxide --version"
+why = "smarter cd"
+
+[[tool]]
+id = "starship"
+component = "shell"
+check = "starship --version"
+why = "cross-shell prompt (zsh, PowerShell, bash)"
+
+[[tool]]
+id = "fastfetch"
+component = "shell"
+check = "fastfetch --version"
+why = "system info on shell start"
+
+[[tool]]
+id = "btop"
+component = "shell"
+check = "btop --version"
+why = "resource monitor"
+
+[[tool]]
+id = "uv"
+component = "python"
+check = "uv --version"
+why = "Python versions, venvs and tools; replaces pip, pipx, pyenv. Do not also install pipx"
+
+[[tool]]
+id = "node"
+component = "node"
+check = "node --version"
+pin = "latest LTS unless a project needs otherwise"
+why = "JS runtime; also needed by Claude Code tooling (tokenade, skills CLI)"
+
+[[tool]]
+id = "bun"
+component = "bun"
+check = "bun --version"
+why = "JS runtime and package manager; goldfish plugin needs it"
+
+[[tool]]
+id = "deno"
+component = "deno"
+check = "deno --version"
+why = "JS/TS runtime"
+
+[[tool]]
+id = "rustup"
+component = "rust"
+check = "rustup --version"
+why = "Rust toolchain manager; always the official rustup, not a distro rustc"
+
+[[tool]]
+id = "cargo"
+component = "rust"
+check = "cargo --version"
+why = "comes with rustup stable; target-dir is shared (INSTRUCTIONS section 4)"
+
+[[tool]]
+id = "go"
+component = "go"
+check = "go version"
+why = "Go toolchain"
+
+[[tool]]
+id = "java"
+component = "java"
+check = "java -version"
+pin = "OpenJDK 21"
+why = "JDK for Ghidra/REA and Android tooling"
+
+[[tool]]
+id = "ruby"
+component = "ruby"
+check = "ruby --version"
+why = "Ruby runtime; needed for Kamal"
+
+[[tool]]
+id = "kamal"
+component = "ruby"
+check = "kamal version"
+why = "deploy tool (gem install kamal)"
+
+[[tool]]
+id = "docker"
+component = "containers"
+check = "docker --version"
+why = "container CLI and engine (OrbStack on macOS, Docker Engine on Linux, Docker Desktop or WSL on Windows)"
+
+[[tool]]
+id = "cc"
+component = "native-build"
+check = "cc --version"
+why = "C compiler/linker; Rust and native modules need one (Windows: MSVC Build Tools, check = `cl` in a VS dev shell; see windows.md)"
+
+[[tool]]
+id = "cmake"
+component = "native-build"
+check = "cmake --version"
+why = "build system"
+
+[[tool]]
+id = "make"
+component = "native-build"
+check = "make --version"
+why = "make (Windows: optional, prefer cmake/just)"
+
+[[tool]]
+id = "lld"
+component = "native-build"
+check = "ld.lld --version"
+why = "fast linker for Rust cross builds; optional"
+
+[[tool]]
+id = "typst"
+component = "docs"
+check = "typst --version"
+why = "typesetting; typst skill"
+
+[[tool]]
+id = "d2"
+component = "docs"
+check = "d2 --version"
+why = "diagrams; d2 skill"
+
+[[tool]]
+id = "tesseract"
+component = "docs"
+check = "tesseract --version"
+why = "OCR; tokenade reads images through it"
+
+[[tool]]
+id = "radare2"
+component = "reverse-eng"
+check = "r2 -v"
+why = "reverse engineering (REA engine)"
+
+[[tool]]
+id = "qemu"
+component = "reverse-eng"
+check = "qemu-system-x86_64 --version"
+why = "emulation for firmware work"
+
+[[tool]]
+id = "7zip"
+component = "reverse-eng"
+check = "7zz"
+why = "archive/ext4 extraction (binary is 7zz, 7z or 7za by OS)"
+
+[[tool]]
+id = "squashfs"
+component = "reverse-eng"
+check = "unsquashfs -h"
+why = "squashfs extraction (Linux/macOS; Windows: use WSL)"
+
+[[tool]]
+id = "actionlint"
+component = "extras"
+check = "actionlint -version"
+why = "GitHub Actions linter"
