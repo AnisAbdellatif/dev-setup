@@ -16,6 +16,7 @@ id = "ripgrep"
 [[item]]
 id = "fd"
 hint = "distro (`fd-find` on Debian; binary is `fdfind`, symlink it to `fd` in ~/.local/bin)"
+check = "fd --version || fdfind --version"
 [[item]]
 id = "fzf"
 [[item]]
@@ -60,7 +61,7 @@ id = "go"
 hint = "official tarball from go.dev (distro Go is typically old) into /usr/local/go or ~/.local/go"
 [[item]]
 id = "java"
-hint = "distro openjdk-21; set JAVA_HOME in ~/.zshrc.local"
+hint = "distro openjdk-21; tell the user to set JAVA_HOME in their shell config"
 [[item]]
 id = "ruby"
 [[item]]
@@ -108,7 +109,7 @@ id = "actionlint"
 hint = "release binary"
 [[item]]
 id = "mise"
-hint = "official installer or release binary into ~/.local/bin; activation in ~/.zshrc.local"
+hint = "official installer or release binary into ~/.local/bin; tell the user the shell activation line for their shell config"
 [[item]]
 id = "fnm"
 [[item]]
@@ -124,10 +125,13 @@ install = "git clone --depth=1 https://github.com/romkatv/powerlevel10k.git \"${
 hint = "needs oh-my-zsh and a Nerd Font"
 [[item]]
 id = "zsh-autosuggestions"
-hint = "distro package; else clone into ~/.zsh/ and source it from ~/.zshrc.local"
+hint = "distro package (installs to /usr/share/zsh-autosuggestions, where the Dotfiles zshrc sources it); else clone into ~/.zsh/ and tell the user"
 [[item]]
 id = "zsh-syntax-highlighting"
-hint = "distro package; else clone into ~/.zsh/ and source it from ~/.zshrc.local"
+hint = "distro package (installs to /usr/share/zsh-syntax-highlighting, where the Dotfiles zshrc sources it); else clone into ~/.zsh/ and tell the user"
+[[item]]
+id = "nerd-font"
+hint = "download the Meslo Nerd Font from github.com/ryanoasis/nerd-fonts releases into ~/.local/share/fonts, then `fc-cache -f`; or a distro font package"
 
 [[choice]]
 id = "docker-group"

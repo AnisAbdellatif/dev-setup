@@ -83,6 +83,7 @@ elevation = true
 note = "needs WSL2 or Hyper-V and a reboot; alternative: Docker Engine inside WSL"
 [[item]]
 id = "cc"
+check = 'if exist "%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe" (exit 0) else (exit 1)'
 install = "winget install --id Microsoft.VisualStudio.2022.BuildTools -e --override \"--quiet --add Microsoft.VisualStudio.Workload.VCTools --includeRecommended\""
 elevation = true
 note = "check `cl` only works in a Developer PowerShell; verify with `where.exe link` or a trivial `cargo build`"
@@ -95,6 +96,7 @@ na = "prefer cmake; `scoop install make` if a project needs it"
 [[item]]
 id = "lld"
 pkg = "LLVM.LLVM"
+check = "where lld-link"
 note = "provides lld-link; the ld.lld check does not apply, use `lld-link --version`"
 [[item]]
 id = "typst"
@@ -115,6 +117,7 @@ pkg = "SoftwareFreedomConservancy.QEMU"
 [[item]]
 id = "7zip"
 pkg = "7zip.7zip"
+check = "where 7z"
 note = "binary is 7z.exe; may need PATH"
 [[item]]
 id = "squashfs"
@@ -125,10 +128,15 @@ install = "scoop install actionlint"
 [[item]]
 id = "mise"
 pkg = "jdx.mise"
-note = "activate in $PROFILE.local.ps1"
+note = "tell the user the activation line for their PowerShell profile"
 [[item]]
 id = "fnm"
 pkg = "Schniz.fnm"
+[[item]]
+id = "nerd-font"
+pkg = "DEVCOM.JetBrainsMonoNerdFont"
+check = "powershell -NoProfile -Command \"Add-Type -AssemblyName System.Drawing; if ((New-Object System.Drawing.Text.InstalledFontCollection).Families | Where-Object { $_.Name -match 'Nerd|Meslo' }) { exit 0 } else { exit 1 }\""
+note = "any Nerd Font works; also select it in Windows Terminal"
 
 # ---------------------------------------------------------------- platform-only items
 [[item]]

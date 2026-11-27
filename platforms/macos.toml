@@ -54,10 +54,10 @@ id = "go"
 [[item]]
 id = "java"
 pkg = "openjdk@21"
-note = "set JAVA_HOME=$(brew --prefix openjdk@21)/libexec/openjdk.jdk/Contents/Home in ~/.zshrc.local"
+note = "tell the user to add JAVA_HOME=$(brew --prefix openjdk@21)/libexec/openjdk.jdk/Contents/Home to their shell config"
 [[item]]
 id = "ruby"
-note = "keg-only: put $(brew --prefix ruby)/bin first in PATH via ~/.zshrc.local"
+note = "keg-only: tell the user to put $(brew --prefix ruby)/bin first in PATH in their shell config"
 [[item]]
 id = "kamal"
 install = "gem install kamal"
@@ -97,7 +97,7 @@ id = "squashfs"
 id = "actionlint"
 [[item]]
 id = "mise"
-note = "shell activation line goes in ~/.zshrc.local"
+note = "tell the user the shell activation line (`eval \"$(mise activate zsh)\"`) for their shell config"
 [[item]]
 id = "fnm"
 [[item]]
@@ -115,6 +115,11 @@ note = "needs oh-my-zsh and a Nerd Font; `p10k configure` is interactive"
 id = "zsh-autosuggestions"
 [[item]]
 id = "zsh-syntax-highlighting"
+[[item]]
+id = "nerd-font"
+install = "brew install --cask font-meslo-lg-nerd-font"
+check = "ls ~/Library/Fonts /Library/Fonts 2>/dev/null | grep -qi -E 'meslo|nerd'"
+note = "also select the font in the terminal app (Ghostty: font-family = MesloLGS Nerd Font)"
 
 # ---------------------------------------------------------------- GUI apps (each offered individually)
 [[item]]

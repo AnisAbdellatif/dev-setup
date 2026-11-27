@@ -15,7 +15,7 @@ In this order, preferring the newest maintained one:
 Adding a third-party repo needs the user's OK each time.
 
 ## Notes
-- Shell: zsh if the user chose the repo's zsh dotfiles. Otherwise bash: put the PATH lines of `dotfiles/unix/zshenv` in `~/.profile` / `~/.bashrc` and tell the user.
+- Shell: the user's Dotfiles repo targets zsh, so install zsh when `dotfiles-apply` is true. Without it, bash stays: tell the user which PATH lines their tools need.
 - Non-interactive shells (SSH commands, Claude Code hooks) read only `~/.zshenv` (zsh) or `~/.profile` / `~/.bash_profile` (bash): keep PATH there.
 - Choices `docker-group`, `docker-rootless`, `change-shell` are the user's call; never apply them unticked. The docker group is root-equivalent.
 - GUI apps depend on the desktop (X11/Wayland); headless boxes have none. There are no GUI items in `linux.toml`: if the user wants some, find the distro package, Flatpak or AppImage and offer it.

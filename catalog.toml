@@ -202,13 +202,13 @@ why = "emulation for firmware work"
 [[tool]]
 id = "7zip"
 component = "reverse-eng"
-check = "7zz"
-why = "archive/ext4 extraction (binary is 7zz, 7z or 7za by OS)"
+check = "command -v 7zz || command -v 7z || command -v 7za"
+why = "archive/ext4 extraction (binary is 7zz, 7z or 7za by OS; Windows overrides the check)"
 
 [[tool]]
 id = "squashfs"
 component = "reverse-eng"
-check = "unsquashfs -h"
+check = "command -v unsquashfs"
 why = "squashfs extraction (Linux/macOS; Windows: use WSL)"
 
 [[tool]]
@@ -241,28 +241,34 @@ id = "oh-my-zsh"
 component = "shell-extras"
 os = ["macos", "linux"]
 check = "test -d \"$HOME/.oh-my-zsh\""
-why = "zsh plugin framework; the zshrc uses it when present"
+why = "zsh plugin framework; brings the built-in plugins the Dotfiles zshrc uses (git, sudo, colored-man-pages, history-substring-search)"
 
 [[tool]]
 id = "powerlevel10k"
 component = "shell-extras"
 os = ["macos", "linux"]
 check = "test -d \"$HOME/.oh-my-zsh/custom/themes/powerlevel10k\""
-why = "zsh theme; wins over starship in zsh when installed (needs oh-my-zsh and a Nerd Font)"
+why = "zsh theme used by the Dotfiles zshrc (needs oh-my-zsh and a Nerd Font)"
 
 [[tool]]
 id = "zsh-autosuggestions"
 component = "shell-extras"
 os = ["macos", "linux"]
 check = "test -r /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh || test -r /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh || test -r /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh || test -r /home/linuxbrew/.linuxbrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
-why = "fish-style history suggestions; the zshrc loads it from brew or system paths"
+why = "fish-style history suggestions; sourced by the Dotfiles zshrc"
 
 [[tool]]
 id = "zsh-syntax-highlighting"
 component = "shell-extras"
 os = ["macos", "linux"]
 check = "test -r /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh || test -r /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh || test -r /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh || test -r /home/linuxbrew/.linuxbrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
-why = "command highlighting while typing; the zshrc loads it from brew or system paths"
+why = "command highlighting while typing; sourced last by the Dotfiles zshrc"
+
+[[tool]]
+id = "nerd-font"
+component = "shell-extras"
+check = "fc-list | grep -qi -E 'meslo|nerd'"
+why = "a Nerd Font for powerlevel10k/starship icons; also set it in the terminal app by hand (the OS check only sees installed fonts)"
 
 # ---------------------------------------------------------------- components (menu groups)
 [component.core]
@@ -304,15 +310,15 @@ title = "GUI apps (platform file)"
 [component.os-defaults]
 title = "OS settings (platform file)"
 [component.dotfiles]
-title = "Dotfiles and git identity"
+title = "Dotfiles repo and git identity"
 
 # ---------------------------------------------------------------- presets: only pre-tick; the user can change everything
 [preset.full]
 components = ["*"]
 [preset.minimal]
-components = ["core", "shell", "dotfiles"]
+components = ["core", "shell", "shell-extras", "dotfiles"]
 [preset.server]
-components = ["core", "shell", "python", "node", "rust", "bun", "containers", "native-build", "dotfiles"]
+components = ["core", "shell", "shell-extras", "python", "node", "rust", "bun", "containers", "native-build", "dotfiles"]
 [preset.custom]
 components = []
 
@@ -348,38 +354,19 @@ label = "git user.email (empty = keep the existing value)"
 type = "text"
 default = ""
 
+# Dotfiles live in their own repo (not here). It is a bare repo checked out into $HOME (the `dot` alias).
 [[choice]]
-id = "dotfile-gitconfig"
-component = "dotfiles"
-label = "dotfiles/common/gitconfig"
-type = "one"
-options = ["link", "copy", "skip"]
-default = "link"
-default_by_os = { windows = "copy" }
-
-[[choice]]
-id = "dotfile-zshenv"
+id = "dotfiles-apply"
 component = "dotfiles"
 os = ["macos", "linux"]
-label = "dotfiles/unix/zshenv"
-type = "one"
-options = ["link", "copy", "skip"]
-default = "link"
+label = "Set up my dotfiles repo (bare repo in ~/.dotfiles, checked out into $HOME)"
+type = "bool"
+default = true
 
 [[choice]]
-id = "dotfile-zshrc"
+id = "dotfiles-url"
 component = "dotfiles"
 os = ["macos", "linux"]
-label = "dotfiles/unix/zshrc"
-type = "one"
-options = ["link", "copy", "skip"]
-default = "link"
-
-[[choice]]
-id = "dotfile-profile"
-component = "dotfiles"
-os = ["windows"]
-label = "dotfiles/windows/profile.ps1 (dot-sourced from $PROFILE)"
-type = "one"
-options = ["link", "copy", "skip"]
-default = "copy"
+label = "Dotfiles repo URL (https, or git@github.com:... if the SSH agent is set up)"
+type = "text"
+default = "https://github.com/AnisAbdellatif/Dotfiles.git"

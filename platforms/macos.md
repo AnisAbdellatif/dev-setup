@@ -4,7 +4,7 @@ Read after INSTRUCTIONS.md §1. The install map and OS choices are in `macos.tom
 
 ## Prerequisites
 1. Command Line Tools: `xcode-select -p` || `xcode-select --install` (GUI prompt; tell the user to accept, then re-check). Full Xcode is only needed for iOS/macOS app work (ask).
-2. Homebrew: `command -v brew` || official installer from https://brew.sh (`curl | bash`: ask first). Then `eval "$(/opt/homebrew/bin/brew shellenv)"` for this session; `dotfiles/unix/zshenv` makes it permanent.
+2. Homebrew: `command -v brew` || official installer from https://brew.sh (`curl | bash`: ask first). Then `eval "$(/opt/homebrew/bin/brew shellenv)"` for this session. Making it permanent (`~/.zprofile`/`~/.zshenv`) is a shell-config line for the user to add (the brew installer prints it).
 3. Install CLI tools with brew; language toolchains as the `install` field says (rustup is the official installer, not brew).
 
 ## Notes
